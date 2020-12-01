@@ -14,6 +14,7 @@ import engine.Core;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  *
  */
+//Play Mode Screen
 public class PlayModeScreen extends Screen {
 
     private static final int SELECTION_TIME = 200;
@@ -33,6 +34,7 @@ public class PlayModeScreen extends Screen {
     public PlayModeScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
 
+        //return Code default value 2
         this.returnCode = 2;
 
         this.returnCode = 2;
