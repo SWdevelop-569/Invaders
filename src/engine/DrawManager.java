@@ -159,8 +159,8 @@ public final class DrawManager {
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
 
-		// drawBorders(screen);
-		// drawGrid(screen);
+//		 drawBorders(screen);
+//		 drawGrid(screen);
 	}
 
 	/**
@@ -255,9 +255,9 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0);
+		Ship dummyShip1 = new Ship(0, 0);
 		for (int i = 0; i < lives; i++)
-			drawEntity(dummyShip, 40 + 35 * i, 10);
+			drawEntity(dummyShip1, 40 + 35 * i, 10);
 	}
 
 	/**
@@ -303,13 +303,14 @@ public final class DrawManager {
 	 *            Option selected.
 	 */
 	public void drawMenu(final Screen screen, final int option) {
-		String playString = "Play";
+		// play -> play mode
+		String playString = "Play Mode";
 		String highScoresString = "High scores";
 		String exitString = "exit";
 		///////////////////////////
 		String resetScoreString = "Reset Score";
 
-		if (option == 2)
+		if (option == 5)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
@@ -328,6 +329,7 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, resetScoreString, screen.getHeight()
 				/ 3 * 2 + fontRegularMetrics.getHeight() * 4);
+
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
@@ -567,5 +569,42 @@ public final class DrawManager {
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	//play mode title screen
+	public void drawPlayModeTitle(final Screen screen) {
+		String playmodeString = "Play Mode";
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, playmodeString, screen.getHeight() / 8);
+	}
+
+	//create play mode menu
+	public void drawPlayModeMenu(final Screen screen, final int option) {
+		String single = "Single Play Mode";
+		String multi = "Multi Play Mode";
+		String back = "Return";
+
+		//play single mode
+		if (option == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single,
+				screen.getHeight() / 3 * 2);
+		//play multi mode
+		if (option == 6)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi, screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		//return to title screen
+		if (option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, back, screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 4);
 	}
 }
