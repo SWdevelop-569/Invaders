@@ -78,10 +78,10 @@ public class GameScreen extends Screen {
 	 *            Current game state.
 	 * @param gameSettings
 	 *            Current game settings.
-	 * @param bonnusLife
-	 *            Checks if a bonus life is awarded this level.
+	 * @param bonusLife
+	 *            Checks if a bonusß life is awarded this level.
 	 * @param width
-	 *            Screen width.
+	 *            Screen width.s
 	 * @param height
 	 *            Screen height.
 	 * @param fps
