@@ -198,14 +198,6 @@ public final class Core {
 				break;
 //			case 6:
 				//multi play mode
-			case 7:
-				//return to title
-				currentScreen = new TitleScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " title screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing title screen");
-				break;
 
 			default:
 				break;

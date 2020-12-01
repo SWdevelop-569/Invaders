@@ -81,14 +81,14 @@ public class PlayModeScreen extends Screen {
         if (this.returnCode == 2)
             this.returnCode = 6;
         else if (this.returnCode == 6)
-            this.returnCode = 7;
+            this.returnCode = 1;
         else
             this.returnCode = 2;
     }
 
     private void previousMenuItem() {
         if (this.returnCode == 2)
-            this.returnCode = 7;
+            this.returnCode = 1;
         else if (this.returnCode == 6)
             this.returnCode = 2;
         else
