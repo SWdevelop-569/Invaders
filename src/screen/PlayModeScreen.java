@@ -14,6 +14,7 @@ import engine.Core;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  *
  */
+//Play Mode Screen
 public class PlayModeScreen extends Screen {
 
     private static final int SELECTION_TIME = 200;
@@ -33,6 +34,7 @@ public class PlayModeScreen extends Screen {
     public PlayModeScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
 
+        //return Code default value 2
         this.returnCode = 2;
 
         this.returnCode = 2;
@@ -79,14 +81,14 @@ public class PlayModeScreen extends Screen {
         if (this.returnCode == 2)
             this.returnCode = 6;
         else if (this.returnCode == 6)
-            this.returnCode = 7;
+            this.returnCode = 1;
         else
             this.returnCode = 2;
     }
 
     private void previousMenuItem() {
         if (this.returnCode == 2)
-            this.returnCode = 7;
+            this.returnCode = 1;
         else if (this.returnCode == 6)
             this.returnCode = 2;
         else

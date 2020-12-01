@@ -198,14 +198,42 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing play mode screen");
 				break;
+			case 6:
+//				multi play mode
+				do {
+					// One extra live every few levels.
+					boolean bonusLife = gameState.getLevel()
+							% EXTRA_LIFE_FRECUENCY == 0
+							&& gameState.getLivesRemaining() < MAX_LIVES;
 
-//			case 6:
-			case 7:
-				currentScreen = new TitleScreen(width, height, FPS);
+					currentScreen = new MulityGameScreen(gameState,
+							gameSettings.get(gameState.getLevel() - 1),
+							bonusLife, width, height, FPS);
+					LOGGER.info("2P Starting " + WIDTH + "x" + HEIGHT
+							+ " game screen at " + FPS + " fps.");
+					frame.setScreen(currentScreen);
+					LOGGER.info("Closing game screen.");
+
+					gameState = ((GameScreen) currentScreen).getGameState();
+
+					gameState = new GameState(gameState.getLevel() + 1,
+							gameState.getScore(),
+							gameState.getLivesRemaining(),
+							gameState.getBulletsShot(),
+							gameState.getShipsDestroyed());
+
+				} while (gameState.getLivesRemaining() > 0
+						&& gameState.getLevel() <= NUM_LEVELS);
+
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " title screen at " + FPS + " fps.");
+						+ " score screen at " + FPS + " fps, with a score of "
+						+ gameState.getScore() + ", "
+						+ gameState.getLivesRemaining() + " lives remaining, "
+						+ gameState.getBulletsShot() + " bullets shot and "
+						+ gameState.getShipsDestroyed() + " ships destroyed.");
+				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing title screen");
+				LOGGER.info("Closing score screen.");
 				break;
 
 			default:

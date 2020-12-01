@@ -80,9 +80,13 @@ public class GameScreen extends Screen {
 	 * @param gameSettings
 	 *            Current game settings.
 	 * @param bonusLife
+<<<<<<< HEAD
 	 *            Checks if a bonus life is awarded this level.
+=======
+	 *            Checks if a bonusß life is awarded this level.
+>>>>>>> feature-SI-31-make 2p and controll
 	 * @param width
-	 *            Screen width.
+	 *            Screen width.s
 	 * @param height
 	 *            Screen height.
 	 * @param fps
