@@ -31,6 +31,7 @@ public class MulityGameScreen extends Screen {
     private static final int SCREEN_CHANGE_INTERVAL = 1500;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
+
     /** 정지버튼이 전에 눌렸였는지 아닌지 검사**/
     boolean isNextpressed = false;
     boolean isPausepressed = false;
@@ -44,6 +45,7 @@ public class MulityGameScreen extends Screen {
     /** Player's ship. */
     private Ship ship;
     private Ship ship2;//2p
+
     /** Bonus enemy ship that appears sometimes. */
     private EnemyShip enemyShipSpecial;
     /** Minimum time between bonus ship appearances. */
@@ -55,6 +57,7 @@ public class MulityGameScreen extends Screen {
     /** Set of all bullets fired by on screen ships. */
     private Set<Bullet> bullets;
     private Set<Bullet> bullets2;
+
     /** Current score. */
     private int score;
     private int score2;
@@ -167,7 +170,6 @@ public class MulityGameScreen extends Screen {
                 boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
                 // esc 키로 pause 시킴
                 boolean gamePause = inputManager.isKeyDown(KeyEvent.VK_ESCAPE);
-
 
                 boolean isRightBorder = this.ship.getPositionX()
                         + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -389,7 +391,6 @@ public class MulityGameScreen extends Screen {
                     || bullet.getPositionY() > this.height)
                 recyclable.add(bullet);
         }
-
         for (Bullet bullet : this.bullets2) {
             bullet.update();
             if (bullet.getPositionY() < SEPARATION_LINE_HEIGHT
