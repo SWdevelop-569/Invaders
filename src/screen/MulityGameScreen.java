@@ -1,5 +1,6 @@
 package screen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +43,7 @@ public class MulityGameScreen extends Screen {
     private EnemyShipFormation enemyShipFormation;
     /** Player's ship. */
     private Ship ship;
-    private Ship2 ship2;//2p
+    private Ship ship2;//2p
     /** Bonus enemy ship that appears sometimes. */
     private EnemyShip enemyShipSpecial;
     /** Minimum time between bonus ship appearances. */
@@ -53,6 +54,7 @@ public class MulityGameScreen extends Screen {
     private Cooldown screenFinishedCooldown;
     /** Set of all bullets fired by on screen ships. */
     private Set<Bullet> bullets;
+    private Set<Bullet> bullets2;
     /** Current score. */
     private int score;
     private int score2;
@@ -114,8 +116,8 @@ public class MulityGameScreen extends Screen {
 
         enemyShipFormation = new EnemyShipFormation(this.gameSettings);
         enemyShipFormation.attach(this);
-        this.ship = new Ship(this.width / 2, this.height - 30);
-        this.ship2 = new Ship2(this.width / 2, this.height - 30);//2[용 배 객체 생성
+        this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
+        this.ship2 = new Ship(this.width / 2, this.height - 30, Color.BLUE);//2[용 배 객체 생성
         // Appears each 10-30 seconds.
         this.enemyShipSpecialCooldown = Core.getVariableCooldown(
                 BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
@@ -124,6 +126,7 @@ public class MulityGameScreen extends Screen {
                 .getCooldown(BONUS_SHIP_EXPLOSION);
         this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
         this.bullets = new HashSet<Bullet>();
+        this.bullets2 = new HashSet<Bullet>();
 
 
         // Special input delay / countdown.
@@ -141,7 +144,7 @@ public class MulityGameScreen extends Screen {
         super.run();
 
         this.score += LIFE_SCORE * (this.lives - 1);
-        this.score += LIFE_SCORE * (this.lives2 - 1);
+        this.score2 += LIFE_SCORE * (this.lives2 - 1);
 
         this.logger.info("Screen cleared with a score of \n1p:" + this.score + "2p:"+this.score2);
 
@@ -155,10 +158,10 @@ public class MulityGameScreen extends Screen {
         super.update();
 
         if (this.inputDelay.checkFinished() && !this.levelFinished) {
-            //1p는 방향키와 L로 공격하도록 설정
-            if (!this.ship.isDestroyed()) {
-                boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
-                boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
+            //1p는 a,d와 spacebar로 공격하도록 설정
+            if (!this.ship.isDestroyed()||this.lives>0) {
+                boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
+                boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
 
                 // del 키로 next level 로 넘김
                 boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
@@ -202,14 +205,14 @@ public class MulityGameScreen extends Screen {
                     }
                 }
 
-                if (inputManager.isKeyDown(KeyEvent.VK_L))
+                if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
                     if (this.ship.shoot(this.bullets))
                         this.bulletsShot++;
             }
-            //2p는 a,d와 space로 공격하도록 설 정
-            if (!this.ship2.isDestroyed()) {
-                boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
-                boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
+            //2p는 방향키와 l로 공격하도록 설 정
+            if (!this.ship2.isDestroyed() || this.lives2 > 0) {
+                boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
+                boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
                 // del 키로 next level 로 넘김
                 boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
@@ -251,8 +254,8 @@ public class MulityGameScreen extends Screen {
                     }
                 }
 
-                if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-                    if (this.ship2.shoot(this.bullets))
+                if (inputManager.isKeyDown(KeyEvent.VK_L))
+                    if (this.ship2.shoot(this.bullets2))
                         this.bulletsShot2++;
             }
 
@@ -277,16 +280,29 @@ public class MulityGameScreen extends Screen {
 
             this.ship.update();
             this.ship2.update();
+
+            /**
+             * 죽었을경우 색깔 검정 + 오른쪽위로 옮겨서 안보이게 만들기 ^^
+             */
+            if(this.lives <= 0){
+                this.ship = new Ship(0,0,0,0,Color.black);
+            }
+            if(this.lives2 <= 0){
+                this.ship2 = new Ship(0,0,0,0,Color.black);
+            }
+
+
             // 입력된 그래픽들을 적용해줌.
             this.enemyShipFormation.update();
             this.enemyShipFormation.shoot(this.bullets);
+            this.enemyShipFormation.shoot(this.bullets2);
         }
 
         manageCollisions();
         cleanBullets();
         draw();
 
-        if ((this.enemyShipFormation.isEmpty() || (this.lives == 0 && this.lives2 == 0))//둘다 죽으면
+        if ((this.enemyShipFormation.isEmpty() || (this.lives <= 0 && this.lives2 <= 0))//둘다 죽으면
                 && !this.levelFinished) {
             this.levelFinished = true;
             this.screenFinishedCooldown.reset();
@@ -314,10 +330,14 @@ public class MulityGameScreen extends Screen {
 
         enemyShipFormation.draw();
 
-        for (Bullet bullet : this.bullets)
+        for (Bullet bullet : this.bullets) {
             drawManager.drawEntity(bullet, bullet.getPositionX(),
                     bullet.getPositionY());
-
+        }
+        for (Bullet bullet : this.bullets2) {
+            drawManager.drawEntity(bullet, bullet.getPositionX(),
+                    bullet.getPositionY());
+        }
         // Interface.
         drawManager.drawScore(this, this.score);
         drawManager.drawScore2(this, this.score2);//for2p
@@ -363,16 +383,21 @@ public class MulityGameScreen extends Screen {
      */
     private void cleanBullets() {
         Set<Bullet> recyclable = new HashSet<Bullet>();
-        Set<Bullet> recyclable2 = new HashSet<Bullet>();
         for (Bullet bullet : this.bullets) {
             bullet.update();
             if (bullet.getPositionY() < SEPARATION_LINE_HEIGHT
                     || bullet.getPositionY() > this.height)
                 recyclable.add(bullet);
         }
-        this.bullets.removeAll(recyclable);
+
+        for (Bullet bullet : this.bullets2) {
+            bullet.update();
+            if (bullet.getPositionY() < SEPARATION_LINE_HEIGHT
+                    || bullet.getPositionY() > this.height)
+                recyclable.add(bullet);
+        }
+        this.bullets2.removeAll(recyclable);
         BulletPool.recycle(recyclable);
-        BulletPool.recycle(recyclable2);
     }
 
     /**
@@ -380,8 +405,7 @@ public class MulityGameScreen extends Screen {
      */
     private void manageCollisions() {
         Set<Bullet> recyclable = new HashSet<Bullet>();
-        Set<Bullet> recyclable2 = new HashSet<Bullet>();
-        for (Bullet bullet : this.bullets)
+        for (Bullet bullet : this.bullets){
             if (bullet.getSpeed() > 0) {
                 if (checkCollision(bullet, this.ship) && !this.levelFinished) {
                     recyclable.add(bullet);
@@ -420,10 +444,52 @@ public class MulityGameScreen extends Screen {
                     recyclable.add(bullet);
                 }
             }
+        }
+
+        for (Bullet bullet : this.bullets2) {
+            if (bullet.getSpeed() > 0) {
+                if (checkCollision(bullet, this.ship) && !this.levelFinished) {
+                    recyclable.add(bullet);
+                    if (!this.ship.isDestroyed()) {
+                        this.ship.destroy();
+                        this.lives--;
+                        this.logger.info("Hit on player ship, " + this.lives
+                                + " lives remaining.");
+                    }
+                }
+                if (checkCollision(bullet, this.ship2) && !this.levelFinished) {
+                    recyclable.add(bullet);
+                    if (!this.ship2.isDestroyed()) {
+                        this.ship2.destroy();
+                        this.lives2--;
+                        this.logger.info("Hit on player ship, " + this.lives2
+                                + " lives remaining.");
+                    }
+                }
+            } else {
+                for (EnemyShip enemyShip : this.enemyShipFormation)
+                    if (!enemyShip.isDestroyed()
+                            && checkCollision(bullet, enemyShip)) {
+                        this.score2 += enemyShip.getPointValue();
+                        this.shipsDestroyed++;
+                        this.enemyShipFormation.destroy(enemyShip);
+                        recyclable.add(bullet);
+                    }
+                if (this.enemyShipSpecial != null
+                        && !this.enemyShipSpecial.isDestroyed()
+                        && checkCollision(bullet, this.enemyShipSpecial)) {
+                    this.score2 += this.enemyShipSpecial.getPointValue();
+                    this.shipsDestroyed++;
+                    this.enemyShipSpecial.destroy();
+                    this.enemyShipSpecialExplosionCooldown.reset();
+                    recyclable.add(bullet);
+                }
+            }
+        }
 
         this.bullets.removeAll(recyclable);
+        this.bullets2.removeAll(recyclable);
         BulletPool.recycle(recyclable);
-        BulletPool.recycle(recyclable2);
     }
 
     /**
@@ -458,6 +524,6 @@ public class MulityGameScreen extends Screen {
      */
     public final MultiGameState getGameState() {
         return new MultiGameState(this.level, this.score,this.score2, this.lives,
-                this.lives, this.bulletsShot, this.bulletsShot2,this.shipsDestroyed);
+                this.lives2, this.bulletsShot, this.bulletsShot2,this.shipsDestroyed);
     }
 }

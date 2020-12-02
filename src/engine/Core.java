@@ -234,7 +234,10 @@ public final class Core {
 						+ multiGameState.getLivesRemaining() + " lives remaining, "
 						+ multiGameState.getBulletsShot() + " bullets shot and "
 						+ multiGameState.getShipsDestroyed() + " ships destroyed.");
-				currentScreen = new ScoreScreen(width, height, FPS, gameState); // 수정필요
+				/**
+				 * 밑에 줄이 게임 끝나면 화면띄우는 코드인데 2인용은 따로 저장되게 만들면 될듯하옵니다
+				 */
+				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
 				break;
