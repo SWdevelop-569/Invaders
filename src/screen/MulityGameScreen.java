@@ -3,11 +3,9 @@ package screen;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.GameSettings;
-import engine.GameState;
+import engine.*;
 import entity.*;
 
 /**
@@ -32,6 +30,9 @@ public class MulityGameScreen extends Screen {
     private static final int SCREEN_CHANGE_INTERVAL = 1500;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
+    /** 정지버튼이 전에 눌렸였는지 아닌지 검사**/
+    boolean isNextpressed = false;
+    boolean isPausepressed = false;
 
     /** Current game difficulty settings. */
     private GameSettings gameSettings;
@@ -52,7 +53,6 @@ public class MulityGameScreen extends Screen {
     private Cooldown screenFinishedCooldown;
     /** Set of all bullets fired by on screen ships. */
     private Set<Bullet> bullets;
-    private Set<Bullet> bullets2;//for 2p
     /** Current score. */
     private int score;
     private int score2;
@@ -74,8 +74,8 @@ public class MulityGameScreen extends Screen {
     /**
      * Constructor, establishes the properties of the screen.
      *
-     * @param gameState
-     *            Current ßgame state.
+     * @param multiGameState
+     *            Current ßgamße state.
      * @param gameSettings
      *            Current game settings.
      * @param bonusLife
@@ -87,23 +87,23 @@ public class MulityGameScreen extends Screen {
      * @param fps
      *            Frames per second, frame rate at which the game is run.
      */
-    public MulityGameScreen(final GameState gameState,
+    public MulityGameScreen(final MultiGameState multiGameState,
                       final GameSettings gameSettings, final boolean bonusLife,
                       final int width, final int height, final int fps) {
         super(width, height, fps);
         //for 2ps~~~
         this.gameSettings = gameSettings;
         this.bonusLife = bonusLife;
-        this.level = gameState.getLevel();
-        this.score = gameState.getScore();
-        this.score2 = gameState.getScore();
-        this.lives = gameState.getLivesRemaining();
-        this.lives2 = gameState.getLivesRemaining();
+        this.level = multiGameState.getLevel();
+        this.score = multiGameState.getScore()[0];
+        this.score2 = multiGameState.getScore()[1];
+        this.lives = multiGameState.getLivesRemaining()[0];
+        this.lives2 = multiGameState.getLivesRemaining()[1];
         if (this.bonusLife){
             this.lives++;this.lives2++;}
-        this.bulletsShot = gameState.getBulletsShot();
-        this.bulletsShot2 = gameState.getBulletsShot();
-        this.shipsDestroyed = gameState.getShipsDestroyed();
+        this.bulletsShot = multiGameState.getBulletsShot()[0];
+        this.bulletsShot2 = multiGameState.getBulletsShot()[1];
+        this.shipsDestroyed = multiGameState.getShipsDestroyed();
     }
 
     /**
@@ -124,7 +124,6 @@ public class MulityGameScreen extends Screen {
                 .getCooldown(BONUS_SHIP_EXPLOSION);
         this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
         this.bullets = new HashSet<Bullet>();
-        this.bullets2 = new HashSet<Bullet>();
 
 
         // Special input delay / countdown.
@@ -161,6 +160,12 @@ public class MulityGameScreen extends Screen {
                 boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
                 boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
+                // del 키로 next level 로 넘김
+                boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
+                // esc 키로 pause 시킴
+                boolean gamePause = inputManager.isKeyDown(KeyEvent.VK_ESCAPE);
+
+
                 boolean isRightBorder = this.ship.getPositionX()
                         + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
                 boolean isLeftBorder = this.ship.getPositionX()
@@ -172,6 +177,31 @@ public class MulityGameScreen extends Screen {
                 if (moveLeft && !isLeftBorder) {
                     this.ship.moveLeft();
                 }
+
+                if (gameNext){
+                    if (!isNextpressed){
+                        isNextpressed = true;
+                        this.isRunning = false;
+                        this.logger.info("skip the current level");
+                    }
+                }
+                if (gamePause){
+                    // 약간의 딜레이를 주어 esc키의 중복입력을 방지
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    if (isPausepressed){
+                        isPausepressed = false;
+                        this.logger.info("resuming game screen");
+                    }
+                    else {
+                        isPausepressed = true;
+                        this.logger.info("Pausing game screen");
+                    }
+                }
+
                 if (inputManager.isKeyDown(KeyEvent.VK_L))
                     if (this.ship.shoot(this.bullets))
                         this.bulletsShot++;
@@ -180,6 +210,11 @@ public class MulityGameScreen extends Screen {
             if (!this.ship2.isDestroyed()) {
                 boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
                 boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
+
+                // del 키로 next level 로 넘김
+                boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
+                // esc 키로 pause 시킴
+                boolean gamePause = inputManager.isKeyDown(KeyEvent.VK_ESCAPE);
 
                 boolean isRightBorder = this.ship2.getPositionX()
                         + this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
@@ -192,6 +227,30 @@ public class MulityGameScreen extends Screen {
                 if (moveLeft && !isLeftBorder) {
                     this.ship2.moveLeft();
                 }
+                if (gameNext){
+                    if (!isNextpressed){
+                        isNextpressed = true;
+                        this.isRunning = false;
+                        this.logger.info("skip the current level");
+                    }
+                }
+                if (gamePause){
+                    // 약간의 딜레이를 주어 esc키의 중복입력을 방지
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    if (isPausepressed){
+                        isPausepressed = false;
+                        this.logger.info("resuming game screen");
+                    }
+                    else {
+                        isPausepressed = true;
+                        this.logger.info("Pausing game screen");
+                    }
+                }
+
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
                     if (this.ship2.shoot(this.bullets))
                         this.bulletsShot2++;
@@ -218,6 +277,7 @@ public class MulityGameScreen extends Screen {
 
             this.ship.update();
             this.ship2.update();
+            // 입력된 그래픽들을 적용해줌.
             this.enemyShipFormation.update();
             this.enemyShipFormation.shoot(this.bullets);
         }
@@ -258,10 +318,6 @@ public class MulityGameScreen extends Screen {
             drawManager.drawEntity(bullet, bullet.getPositionX(),
                     bullet.getPositionY());
 
-        for (Bullet bullet : this.bullets2)
-            drawManager.drawEntity(bullet, bullet.getPositionX(),
-                    bullet.getPositionY());
-
         // Interface.
         drawManager.drawScore(this, this.score);
         drawManager.drawScore2(this, this.score2);//for2p
@@ -283,6 +339,23 @@ public class MulityGameScreen extends Screen {
         }
 
         drawManager.completeDrawing(this);
+
+        // Show pause UI and stop time
+        if (isPausepressed) {
+            drawManager.drawHorizontalLine(this, this.height / 2 - this.height
+                    / 12);
+            drawManager.drawPause(this);
+            drawManager.drawHorizontalLine(this, this.height / 2 + this.height
+                    / 12);
+            drawManager.completeDrawing(this);
+            try {
+                while (!inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -297,13 +370,6 @@ public class MulityGameScreen extends Screen {
                     || bullet.getPositionY() > this.height)
                 recyclable.add(bullet);
         }
-        for (Bullet bullet : this.bullets2) {
-            bullet.update();
-            if (bullet.getPositionY() < SEPARATION_LINE_HEIGHT
-                    || bullet.getPositionY() > this.height)
-                recyclable2.add(bullet);
-        }
-        this.bullets2.removeAll(recyclable);
         this.bullets.removeAll(recyclable);
         BulletPool.recycle(recyclable);
         BulletPool.recycle(recyclable2);
@@ -323,6 +389,15 @@ public class MulityGameScreen extends Screen {
                         this.ship.destroy();
                         this.lives--;
                         this.logger.info("Hit on player ship, " + this.lives
+                                + " lives remaining.");
+                    }
+                }
+                if (checkCollision(bullet, this.ship2) && !this.levelFinished) {
+                    recyclable.add(bullet);
+                    if (!this.ship2.isDestroyed()) {
+                        this.ship2.destroy();
+                        this.lives2--;
+                        this.logger.info("Hit on player ship, " + this.lives2
                                 + " lives remaining.");
                     }
                 }
@@ -346,38 +421,7 @@ public class MulityGameScreen extends Screen {
                 }
             }
 
-        for (Bullet bullet : this.bullets2)
-            if (bullet.getSpeed() > 0) {
-                if (checkCollision(bullet, this.ship2) && !this.levelFinished) {
-                    recyclable.add(bullet);
-                    if (!this.ship2.isDestroyed()) {
-                        this.ship2.destroy();
-                        this.lives2--;
-                        this.logger.info("Hit on player ship, " + this.lives2
-                                + " lives remaining.");
-                    }
-                }
-            } else {
-                for (EnemyShip enemyShip : this.enemyShipFormation)
-                    if (!enemyShip.isDestroyed()
-                            && checkCollision(bullet, enemyShip)) {
-                        this.score2 += enemyShip.getPointValue();
-                        this.shipsDestroyed++;
-                        this.enemyShipFormation.destroy(enemyShip);
-                        recyclable.add(bullet);
-                    }
-                if (this.enemyShipSpecial != null
-                        && !this.enemyShipSpecial.isDestroyed()
-                        && checkCollision(bullet, this.enemyShipSpecial)) {
-                    this.score += this.enemyShipSpecial.getPointValue();
-                    this.shipsDestroyed++;
-                    this.enemyShipSpecial.destroy();
-                    this.enemyShipSpecialExplosionCooldown.reset();
-                    recyclable.add(bullet);
-                }
-            }
         this.bullets.removeAll(recyclable);
-        this.bullets2.removeAll(recyclable2);
         BulletPool.recycle(recyclable);
         BulletPool.recycle(recyclable2);
     }
@@ -412,8 +456,8 @@ public class MulityGameScreen extends Screen {
      *
      * @return Current game state.
      */
-    public final GameState getGameState() {
-        return new GameState(this.level, this.score, this.lives,
-                this.bulletsShot, this.shipsDestroyed);
+    public final MultiGameState getGameState() {
+        return new MultiGameState(this.level, this.score,this.score2, this.lives,
+                this.lives, this.bulletsShot, this.bulletsShot2,this.shipsDestroyed);
     }
 }
