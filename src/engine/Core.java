@@ -9,11 +9,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import screen.GameScreen;
-import screen.HighScoreScreen;
-import screen.ScoreScreen;
-import screen.Screen;
-import screen.TitleScreen;
+import screen.*;
 
 import javax.swing.*;
 
@@ -116,11 +112,12 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_7);
 		
 		GameState gameState;
+		MultiGameState multiGameState;
 
 		int returnCode = 1;
 		do {
 			gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-
+			multiGameState = new MultiGameState(1,0,0,MAX_LIVES,MAX_LIVES,0,0,0);
 			switch (returnCode) {
 			case 1:
 				// Main menu.
@@ -194,11 +191,59 @@ public final class Core {
 				currentScreen = new HighScoreScreen(width, height, FPS);
 				returnCode = frame.setScreen(currentScreen);
 				break;
+			case 5:
+				//mode select
+				currentScreen = new PlayModeScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " play mode screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing play mode screen");
+				break;
+			case 6:
+//				multi play mode
+				do {
+					// One extra live every few levels.
+					int lives[] = multiGameState.getLivesRemaining();
 
+					boolean bonusLife = multiGameState.getLevel()
+							% EXTRA_LIFE_FRECUENCY == 0
+							&& (lives[0] < MAX_LIVES || lives[1] < MAX_LIVES); // 오류 수정해야함
+
+					currentScreen = new MulityGameScreen(multiGameState,
+							gameSettings.get(multiGameState.getLevel() - 1),
+							bonusLife, width, height, FPS);
+					LOGGER.info("2P Starting " + WIDTH + "x" + HEIGHT
+							+ " game screen at " + FPS + " fps.");
+					frame.setScreen(currentScreen);
+					LOGGER.info("Closing game screen.");
+
+					multiGameState = ((MulityGameScreen) currentScreen).getGameState();
+
+					multiGameState = new MultiGameState(multiGameState.getLevel() + 1,
+							multiGameState.getScore()[0],multiGameState.getScore()[1],
+							multiGameState.getLivesRemaining()[0],multiGameState.getLivesRemaining()[1],
+							multiGameState.getBulletsShot()[0],multiGameState.getBulletsShot()[1],
+							multiGameState.getShipsDestroyed());
+
+				} while ((multiGameState.getLivesRemaining()[0] > 0 || multiGameState.getLivesRemaining()[1]>0)
+						&& multiGameState.getLevel() <= NUM_LEVELS);
+
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " score screen at " + FPS + " fps, with a score of "
+						+ multiGameState.getScore() + ", "
+						+ multiGameState.getLivesRemaining() + " lives remaining, "
+						+ multiGameState.getBulletsShot() + " bullets shot and "
+						+ multiGameState.getShipsDestroyed() + " ships destroyed.");
+				/**
+				 * 밑에 줄이 게임 끝나면 화면띄우는 코드인데 2인용은 따로 저장되게 만들면 될듯하옵니다
+				 */
+				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing score screen.");
+				break;
 			default:
 				break;
 			}
-
 		} while (returnCode != 0);
 
 		fileHandler.flush();
