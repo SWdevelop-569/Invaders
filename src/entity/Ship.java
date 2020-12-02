@@ -43,6 +43,22 @@ public class Ship extends Entity {
 		this.destructionCooldown = Core.getCooldown(1000);
 	}
 
+	public Ship(final int positionX, final int positionY, final Color color) {
+		super(positionX, positionY, 13 * 2, 8 * 2, color);
+
+		this.spriteType = SpriteType.Ship;
+		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+		this.destructionCooldown = Core.getCooldown(1000);
+	}
+
+	public Ship(final int positionX, final int positionY,int width, int height, final Color color) {
+		super(positionX, positionY, width, height, color);
+
+		this.spriteType = SpriteType.Ship;
+		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+		this.destructionCooldown = Core.getCooldown(1000);
+	}
+
 	/**
 	 * Moves the ship speed uni ts right, or until the right screen border is
 	 * reached.
@@ -85,6 +101,7 @@ public class Ship extends Entity {
 		else
 			this.spriteType = SpriteType.Ship;
 	}
+
 
 	/**
 	 * Switches the ship to its destroyed state.
