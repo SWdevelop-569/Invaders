@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import entity.Ship2;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
@@ -242,7 +241,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GREEN);
 
 		String scoreString = String.format("%04d", score);
-		backBufferGraphics.drawString(scoreString, screen.getWidth() - 100, 25);
+		backBufferGraphics.drawString(scoreString, screen.getWidth() - 120, 25);
 	}
 	public void drawScore2(final Screen screen, final int score) {//for 2p
 		backBufferGraphics.setFont(fontRegular);
@@ -250,12 +249,6 @@ public final class DrawManager {
 
 		String scoreString = String.format("%04d", score);
 		backBufferGraphics.drawString(scoreString, screen.getWidth() - 60, 25);
-	}
-	public void drawScore2(final Screen screen, final int score) {//for 2p
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.BLUE);
-		String scoreString = String.format("%04d", score);
-		backBufferGraphics.drawString(scoreString, screen.getWidth() - 20, 25);
 	}
 
 	/**
