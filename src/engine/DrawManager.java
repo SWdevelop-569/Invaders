@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import entity.Ship2;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
@@ -238,9 +239,15 @@ public final class DrawManager {
 	 */
 	public void drawScore(final Screen screen, final int score) {
 		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setColor(Color.GREEN);
 		String scoreString = String.format("%04d", score);
 		backBufferGraphics.drawString(scoreString, screen.getWidth() - 60, 25);
+	}
+	public void drawScore2(final Screen screen, final int score) {//for 2p
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.BLUE);
+		String scoreString = String.format("%04d", score);
+		backBufferGraphics.drawString(scoreString, screen.getWidth() - 20, 25);
 	}
 
 	/**
@@ -253,11 +260,19 @@ public final class DrawManager {
 	 */
 	public void drawLives(final Screen screen, final int lives) {
 		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setColor(Color.GREEN);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
 		Ship dummyShip1 = new Ship(0, 0);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip1, 40 + 35 * i, 10);
+	}
+	public void drawLives2(final Screen screen, final int lives) {//for 2p
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.BLUE);
+		backBufferGraphics.drawString(Integer.toString(lives), 140, 25);
+		Ship2 dummyShip1 = new Ship2(0, 0);
+		for (int i = 0; i < lives; i++)
+			drawEntity(dummyShip1, 160 + 35 * i, 10);
 	}
 
 	/**
