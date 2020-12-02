@@ -1,13 +1,12 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.GameSettings;
-import engine.GameState;
+import engine.*;
 import entity.Bullet;
 import entity.BulletPool;
 import entity.EnemyShip;
@@ -37,6 +36,9 @@ public class GameScreen extends Screen {
 	private static final int SCREEN_CHANGE_INTERVAL = 1500;
 	/** Height of the interface separation line. */
 	private static final int SEPARATION_LINE_HEIGHT = 40;
+	/** 정지버튼이 전에 눌렸였는지 아닌지 검사**/
+	boolean isNextpressed = false;
+	boolean isPausepressed = false;
 
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
@@ -70,7 +72,6 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
-
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -78,7 +79,7 @@ public class GameScreen extends Screen {
 	 *            Current game state.
 	 * @param gameSettings
 	 *            Current game settings.
-	 * @param bonnusLife
+	 * @param bonusLife
 	 *            Checks if a bonus life is awarded this level.
 	 * @param width
 	 *            Screen width.
@@ -122,6 +123,7 @@ public class GameScreen extends Screen {
 		this.bullets = new HashSet<Bullet>();
 
 		// Special input delay / countdown.
+		// 카운트다운에 걸리는 시간 딜레이
 		this.gameStartTime = System.currentTimeMillis();
 		this.inputDelay = Core.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
@@ -146,7 +148,6 @@ public class GameScreen extends Screen {
 	 */
 	protected final void update() {
 		super.update();
-
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 			if (!this.ship.isDestroyed()) {
@@ -154,6 +155,10 @@ public class GameScreen extends Screen {
 						|| inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT)
 						|| inputManager.isKeyDown(KeyEvent.VK_A);
+				// del 키로 next level 로 넘김
+				boolean gameNext = inputManager.isKeyDown(KeyEvent.VK_BACK_SPACE);
+				// esc 키로 pause 시킴
+				boolean gamePause = inputManager.isKeyDown(KeyEvent.VK_ESCAPE);
 
 				boolean isRightBorder = this.ship.getPositionX()
 						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -166,6 +171,30 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
+				if (gameNext){
+					if (!isNextpressed){
+					isNextpressed = true;
+					this.isRunning = false;
+					this.logger.info("skip the current level");
+					}
+				}
+				if (gamePause){
+					// 약간의 딜레이를 주어 esc키의 중복입력을 방지
+					try{
+						TimeUnit.MILLISECONDS.sleep(100);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+					if (isPausepressed){
+						isPausepressed = false;
+						this.logger.info("resuming game screen");
+					}
+				else {
+						isPausepressed = true;
+						this.logger.info("Pausing game screen");
+					}
+				}
+
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
@@ -192,6 +221,8 @@ public class GameScreen extends Screen {
 
 			this.ship.update();
 			this.enemyShipFormation.update();
+			// 입력된 그래픽들을 적용해줌.
+			this.drawManager.completeDrawing(this);
 			this.enemyShipFormation.shoot(this.bullets);
 		}
 
@@ -238,7 +269,7 @@ public class GameScreen extends Screen {
 		if (!this.inputDelay.checkFinished()) {
 			int countdown = (int) ((INPUT_DELAY
 					- (System.currentTimeMillis()
-							- this.gameStartTime)) / 1000);
+					- this.gameStartTime)) / 1000);
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
@@ -246,9 +277,25 @@ public class GameScreen extends Screen {
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height
 					/ 12);
 		}
-
 		drawManager.completeDrawing(this);
+		// Show pause UI and stop time
+		if (isPausepressed) {
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
+					/ 12);
+			drawManager.drawPause(this);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height
+					/ 12);
+			drawManager.completeDrawing(this);
+			try {
+				while (!inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+					TimeUnit.MILLISECONDS.sleep(100);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+
 
 	/**
 	 * Cleans bullets that go off screen.
