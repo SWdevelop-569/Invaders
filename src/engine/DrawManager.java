@@ -475,7 +475,7 @@ public final class DrawManager {
 
 	public void drawGameOver_2p(final Screen screen, final boolean acceptsInput,//for multi
 							 final boolean isNewRecord, int who) {
-		String gameOverString = "Game Over for _"+Integer.toString(who)+"P_";
+		String gameOverString = "Game Over for _"+Integer.toString(who+1)+"P_";
 		String continueOrExitString =
 				"Press Space to play again, Escape to exit";
 

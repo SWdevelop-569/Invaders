@@ -73,7 +73,7 @@ public class ScoreScreen_2p extends Screen {
 
 		try {
 			int i = 1;
-			this.highScores = Core.getFileManager().loadHighScores();//나중에 highscore를 파일별로 나눠줘야함
+			this.highScores = Core.getFileManager().loadHighScores_2p();//나중에 highscore를 파일별로 나눠줘야함
 			if(this.score[0] < this.score[1]) i=2;
 			if (highScores.size() < MAX_HIGH_SCORE_NUM//1p가 신기록인지 검사
 					|| highScores.get(highScores.size() - i).getScore()
@@ -177,14 +177,15 @@ public class ScoreScreen_2p extends Screen {
 	/**
 	 * Saves the score as a high score.
 	 */
-	private void saveScore(int who) {
+	private void saveScore(int who) {//확인도 highscore 확인
+		//highSCores를 scores_2p에서 받아와야함
 		highScores.add(new Score(new String(this.name), score[who]));
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORE_NUM)
 			highScores.remove(highScores.size() - 1);
 
 		try {
-			Core.getFileManager().saveHighScores(highScores);//파일 매니저에 2p용 함수를 만들자
+			Core.getFileManager().saveHighScores_2p(highScores);
 		} catch (IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
