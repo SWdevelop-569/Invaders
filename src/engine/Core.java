@@ -20,7 +20,7 @@ import javax.swing.*;
  * 
  */
 public final class Core {
-
+	public static int forscore;
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
 	/** Height of current screen. */
@@ -165,13 +165,20 @@ public final class Core {
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
-				// High scores.
-				currentScreen = new HighScoreScreen(width, height, FPS);
+				// High scoresSelect.
+				currentScreen = new HighScoreSelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
 				break;
+//				// High scores.
+//				currentScreen = new HighScoreScreen(width, height, FPS);
+//				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+//						+ " high score screen at " + FPS + " fps.");
+//				returnCode = frame.setScreen(currentScreen);
+//				LOGGER.info("Closing high score screen.");
+//				break;
 			case 4:
 				//reset scores
 				if(JOptionPane.showConfirmDialog(null,"reset the scores?","confirm",JOptionPane.YES_NO_OPTION)
@@ -188,7 +195,7 @@ public final class Core {
 				else {
 					LOGGER.info("Didn't Choose to Reset");
 				}
-				currentScreen = new HighScoreScreen(width, height, FPS);
+				currentScreen = new TitleScreen(width, height, FPS);
 				returnCode = frame.setScreen(currentScreen);
 				break;
 			case 5:
@@ -237,9 +244,22 @@ public final class Core {
 				/**
 				 * 밑에 줄이 게임 끝나면 화면띄우는 코드인데 2인용은 따로 저장되게 만들면 될듯하옵니다
 				 */
-				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				currentScreen = new ScoreScreen_2p(width, height, FPS, multiGameState,0);
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing score screen.");
+				LOGGER.info("Closing score_2p screen.");
+				break;
+			case 7://2p점수저장을 위함
+				currentScreen = new ScoreScreen_2p(width, height, FPS, multiGameState,1);
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing score_2p screen.");
+				break;
+			case 8:
+					//highscore by mode
+				currentScreen = new HighScoreScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing high score screen.");
 				break;
 			default:
 				break;
