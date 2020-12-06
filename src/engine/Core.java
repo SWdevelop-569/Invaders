@@ -20,7 +20,6 @@ import javax.swing.*;
  * 
  */
 public final class Core {
-
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
 	/** Height of current screen. */
@@ -237,9 +236,14 @@ public final class Core {
 				/**
 				 * 밑에 줄이 게임 끝나면 화면띄우는 코드인데 2인용은 따로 저장되게 만들면 될듯하옵니다
 				 */
-				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				currentScreen = new ScoreScreen_2p(width, height, FPS, multiGameState,0);
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing score screen.");
+				LOGGER.info("Closing score_2p screen.");
+				break;
+			case 7://2p점수저장을 위함
+				currentScreen = new ScoreScreen_2p(width, height, FPS, multiGameState,1);
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing score_2p screen.");
 				break;
 			default:
 				break;

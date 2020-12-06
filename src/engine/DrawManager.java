@@ -473,6 +473,26 @@ public final class DrawManager {
 				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 10);
 	}
 
+	public void drawGameOver_2p(final Screen screen, final boolean acceptsInput,//for multi
+							 final boolean isNewRecord, int who) {
+		String gameOverString = "Game Over for _"+Integer.toString(who)+"P_";
+		String continueOrExitString =
+				"Press Space to play again, Escape to exit";
+
+		int height = isNewRecord ? 4 : 2;
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, gameOverString, screen.getHeight()
+				/ height - fontBigMetrics.getHeight() * 2);
+
+		if (acceptsInput)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, continueOrExitString,
+				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 10);
+	}
+
 	/**
 	 * Draws high score screen title and instructions.
 	 *
@@ -513,7 +533,6 @@ public final class DrawManager {
 			i++;
 		}
 	}
-
 	/**
 	 * Draws a centered string on regular font.
 	 *
