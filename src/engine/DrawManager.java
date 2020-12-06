@@ -499,8 +499,8 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
-	public void drawHighScoreMenu(final Screen screen) {
-		String highScoreString = "High Scores";
+	public void drawHighScoreMenu(final Screen screen,String mode) {
+		String highScoreString = mode+"  High Scores";
 		String instructionsString = "Press Space to return";
 
 		backBufferGraphics.setColor(Color.GREEN);
@@ -631,6 +631,13 @@ public final class DrawManager {
 		drawCenteredBigString(screen, playmodeString, screen.getHeight() / 8);
 	}
 
+	public void drawScoreTitle(final Screen screen) {
+		String playmodeString = "Score mode";
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, playmodeString, screen.getHeight() / 8);
+	}
+
 	//create play mode menu
 	public void drawPlayModeMenu(final Screen screen, final int option) {
 		String single = "Single Play Mode";
@@ -651,6 +658,68 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, multi, screen.getHeight()
 				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		//return to title screen
+		if (option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, back, screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 4);
+	}
+
+	//create Score mode menu
+	//1=나가기 2~7=single_a부터
+	public void drawScoreModeMenu(final Screen screen, final int option) {
+		String single_a = "single_a";
+		String multi_a = "multi_a";
+		String single_b = "single_b";
+		String multi_b = "multi_b";
+		String single_c = "single_c";
+		String multi_c = "multi_c";
+		String back = "Return";
+
+		if (option == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single_a,
+				screen.getHeight() / 3 * 1);
+
+		if (option == 3)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single_b,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 2);
+
+		if (option == 4)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single_c,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 4);
+
+		if (option == 5)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi_a,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 6);
+
+		if (option == 6)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi_b,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 8);
+
+		if (option == 7)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi_c,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 10);
+
 		//return to title screen
 		if (option == 1)
 			backBufferGraphics.setColor(Color.GREEN);

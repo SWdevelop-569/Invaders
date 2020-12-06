@@ -356,13 +356,17 @@ public final class FileManager {
 	/////////////////////////////////////
 	public void resetHighScores()
 			throws IOException {
+		resetSelectedHighScores("scores");
+		resetSelectedHighScores("scores_2p");
+	}
+	void resetSelectedHighScores(String name) throws IOException{
 		String jarPath = FileManager.class.getProtectionDomain()
 				.getCodeSource().getLocation().getPath();
 		jarPath = URLDecoder.decode(jarPath, "UTF-8");
 
 		String scoresPath = new File(jarPath).getParent();
 		scoresPath += File.separator;
-		scoresPath += "scores";
+		scoresPath += name;
 //		File file = new File(scoresPath);
 		String dummy = "";
 		try {
@@ -373,5 +377,6 @@ public final class FileManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 }
