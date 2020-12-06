@@ -7,6 +7,8 @@ import java.util.List;
 import engine.Core;
 import engine.Score;
 
+import static engine.Core.forscore;
+
 /**
  * Implements the high scores screen, it shows player records.
  * 
@@ -17,6 +19,7 @@ public class HighScoreScreen extends Screen {
 
 	/** List of past high scores. */
 	private List<Score> highScores;
+	String mode;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -34,7 +37,32 @@ public class HighScoreScreen extends Screen {
 		this.returnCode = 1;
 
 		try {
-			this.highScores = Core.getFileManager().loadHighScores();
+			switch (forscore){
+				case 2://single-a
+					this.highScores = Core.getFileManager().loadHighScores();
+					mode="single-a";
+					break;
+				case 3://single-b
+					this.highScores = Core.getFileManager().loadHighScores();
+					mode="single-b";
+					break;
+				case 4://single-c
+					this.highScores = Core.getFileManager().loadHighScores();
+					mode="single-c";
+					break;
+				case 5://multi-a
+					this.highScores = Core.getFileManager().loadHighScores_2p();
+					mode="multi-a";
+					break;
+				case 6://multi-b
+					this.highScores = Core.getFileManager().loadHighScores();
+					mode="multi-b";
+					break;
+				case 7://multi-c
+					this.highScores = Core.getFileManager().loadHighScores();
+					mode="multi-c";
+					break;
+			}
 		} catch (NumberFormatException | IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
@@ -67,9 +95,10 @@ public class HighScoreScreen extends Screen {
 	 * Draws the elements associated with the screen.
 	 */
 	private void draw() {
+
 		drawManager.initDrawing(this);
 
-		drawManager.drawHighScoreMenu(this);
+		drawManager.drawHighScoreMenu(this,mode);
 		drawManager.drawHighScores(this, this.highScores);
 
 		drawManager.completeDrawing(this);
