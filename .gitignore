@@ -180,3 +180,4 @@ src/META-INF/
 src/graphics
 src/scores
 src/font.ttf
+.gradle/
