@@ -7,6 +7,7 @@ jdk:
 branches:
   only:
   - master
+  - feature/SI-39testing2
 cache:
   directories:
   - "$HOME/.m2/repository"
