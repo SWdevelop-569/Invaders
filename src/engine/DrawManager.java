@@ -640,24 +640,56 @@ public final class DrawManager {
 
 	//create play mode menu
 	public void drawPlayModeMenu(final Screen screen, final int option) {
-		String single = "Single Play Mode";
-		String multi = "Multi Play Mode";
+		String single_a = "Single_A_ Play";
+		String single_b = "Single_B_ Play";
+		String single_c = "Single_C_ Play";
+		String multi_a = "Multi_A_ Play";
+		String multi_b = "Multi_B_ Play";
+		String multi_c = "Multi_C_ Play";
 		String back = "Return";
 
-		//play single mode
+		//play single a
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, single,
-				screen.getHeight() / 3 * 2);
-		//play multi mode
+		drawCenteredRegularString(screen, single_a,
+				screen.getHeight() / 3 * 1);
+		//play single b
+		if (option == 3)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single_b,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 2);
+		//play single c
+		if (option == 4)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, single_c,
+				screen.getHeight() / 3 * 1+ fontRegularMetrics.getHeight() * 4);
+		//play multi a
+		if (option == 5)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi_a, screen.getHeight()
+				/ 3 * 1 + fontRegularMetrics.getHeight() * 6);
+		//play multi b
 		if (option == 6)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, multi, screen.getHeight()
-				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		drawCenteredRegularString(screen, multi_b, screen.getHeight()
+				/ 3 * 1 + fontRegularMetrics.getHeight() * 8);
+		//play multi c
+		if (option == 7)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, multi_c, screen.getHeight()
+				/ 3 * 1 + fontRegularMetrics.getHeight() * 10);
 		//return to title screen
 		if (option == 1)
 			backBufferGraphics.setColor(Color.GREEN);

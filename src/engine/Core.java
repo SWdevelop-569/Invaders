@@ -20,7 +20,9 @@ import javax.swing.*;
  * 
  */
 public final class Core {
-	public static int forscore;
+	public static int forscore;//점수확인 설정 옵션
+	public static int gamemode;//게임모드가 무엇인지  234(single) 567(multi)
+
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
 	/** Height of current screen. */
@@ -145,6 +147,9 @@ public final class Core {
 
 					gameState = ((GameScreen) currentScreen).getGameState();
 
+					/**
+					 * gamemode 전역 변수를 이용하여 난이도
+					 */
 					gameState = new GameState(gameState.getLevel() + 1,
 							gameState.getScore(),
 							gameState.getLivesRemaining(),
@@ -160,6 +165,9 @@ public final class Core {
 						+ gameState.getLivesRemaining() + " lives remaining, "
 						+ gameState.getBulletsShot() + " bullets shot and "
 						+ gameState.getShipsDestroyed() + " ships destroyed.");
+				/**
+				 * gamemode 전역 변수를 이용하여 화면
+				 */
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
@@ -225,7 +233,9 @@ public final class Core {
 					LOGGER.info("Closing game screen.");
 
 					multiGameState = ((MulityGameScreen) currentScreen).getGameState();
-
+					/**
+					 * gamemode 전역 변수를 이용하여 인게임 난이도 설정
+					 */
 					multiGameState = new MultiGameState(multiGameState.getLevel() + 1,
 							multiGameState.getScore()[0],multiGameState.getScore()[1],
 							multiGameState.getLivesRemaining()[0],multiGameState.getLivesRemaining()[1],
@@ -243,6 +253,9 @@ public final class Core {
 						+ multiGameState.getShipsDestroyed() + " ships destroyed.");
 				/**
 				 * 밑에 줄이 게임 끝나면 화면띄우는 코드인데 2인용은 따로 저장되게 만들면 될듯하옵니다
+				 */
+				/**
+				 * gamemode 전역 변수를 이용하여 점수저장, 화면 띄우기에 이용
 				 */
 				currentScreen = new ScoreScreen_2p(width, height, FPS, multiGameState,0);
 				returnCode = frame.setScreen(currentScreen);

@@ -7,7 +7,8 @@ jdk:
 branches:
   only:
   - master
-  - feature/SI-39testing2
+  - feature-SI-21
+  - feature-SI-21-SI-35
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
