@@ -377,51 +377,51 @@ public final class Core {
 			SETTINGS_LEVEL_7 =
 					new GameSettings(8, 7, 2, 500);
 		}
-		else if(mode == 3|| mode == 6){//B_normal
+		else if(mode == 3|| mode == 6){//B_normal   -> 적 총알 빈도가 상승
 			/** Difficulty settings for level 1. */
 			SETTINGS_LEVEL_1 =
-					new GameSettings(5, 4, 60, 2000);
+					new GameSettings(5, 4, 60, 1800);
 			/** Difficulty settings for level 2. */
 			SETTINGS_LEVEL_2 =
-					new GameSettings(5, 5, 50, 2500);
+					new GameSettings(5, 5, 50, 2300);
 			/** Difficulty settings for level 3. */
 			SETTINGS_LEVEL_3 =
-					new GameSettings(6, 5, 40, 1500);
+					new GameSettings(6, 5, 40, 1600);
 			/** Difficulty settings for level 4. */
 			SETTINGS_LEVEL_4 =
-					new GameSettings(6, 6, 30, 1500);
+					new GameSettings(6, 6, 30, 1300);
 			/** Difficulty settings for level 5. */
 			SETTINGS_LEVEL_5 =
-					new GameSettings(7, 6, 20, 1000);
+					new GameSettings(7, 6, 20, 800);
 			/** Difficulty settings for level 6. */
 			SETTINGS_LEVEL_6 =
-					new GameSettings(7, 7, 10, 1000);
+					new GameSettings(7, 7, 10, 800);
 			/** Difficulty settings for level 7. */
 			SETTINGS_LEVEL_7 =
-					new GameSettings(8, 7, 2, 500);
+					new GameSettings(8, 7, 2, 400);
 		}
-		else{//C_hard
+		else{//C_hard -> 적 이동속도 상승 + 적 총알 빈도 상승
 			/** Difficulty settings for level 1. */
 			SETTINGS_LEVEL_1 =
-					new GameSettings(5, 4, 60, 2000);
+					new GameSettings(5, 4, 50, 1800);
 			/** Difficulty settings for level 2. */
 			SETTINGS_LEVEL_2 =
-					new GameSettings(5, 5, 50, 2500);
+					new GameSettings(5, 5, 40, 2300);
 			/** Difficulty settings for level 3. */
 			SETTINGS_LEVEL_3 =
-					new GameSettings(6, 5, 40, 1500);
+					new GameSettings(6, 5, 30, 1200);
 			/** Difficulty settings for level 4. */
 			SETTINGS_LEVEL_4 =
-					new GameSettings(6, 6, 30, 1500);
+					new GameSettings(6, 6, 15, 1200);
 			/** Difficulty settings for level 5. */
 			SETTINGS_LEVEL_5 =
-					new GameSettings(7, 6, 20, 1000);
+					new GameSettings(7, 6, 10, 800);
 			/** Difficulty settings for level 6. */
 			SETTINGS_LEVEL_6 =
-					new GameSettings(7, 7, 10, 1000);
+					new GameSettings(7, 7, 6, 800);
 			/** Difficulty settings for level 7. */
 			SETTINGS_LEVEL_7 =
-					new GameSettings(8, 7, 2, 500);
+					new GameSettings(8, 7, 2, 300);
 		}
 
 	}
