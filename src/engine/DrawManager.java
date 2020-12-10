@@ -77,7 +77,7 @@ public final class DrawManager {
 		/** Destroyed enemy ship. */
 		Explosion,
 		//이건 내가만든거
-		EnemyShipBoss
+		EnemyShipBoss,
 	};
 
 	/**
@@ -103,10 +103,24 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
-			spriteMap.put(SpriteType.EnemyShipBoss, new boolean[12][8]);
+
 
 			fileManager.loadSprite(spriteMap);
 			logger.info("Finished loading the sprites.");
+
+			spriteMap.put(SpriteType.EnemyShipBoss, new boolean[12][8]);
+			boolean x[][] = spriteMap.get(SpriteType.EnemyShipBoss);
+			for(int i = 0;x.length > i;i++){
+				for (int j = 0;x[i].length>i;i++) {
+					if(spriteMap.get(SpriteType.EnemyShipC2)[i][j])
+					x[i][j] = true;
+				}
+			}
+			x[1][3]=true;x[2][2]=true;x[3][3]=true;x[8][3]=true;x[9][2]=true;x[10][3]=true;
+			for(int i = 2;10>i;i++){
+				spriteMap.get(SpriteType.EnemyShipBoss)[i][6] = true;
+			}
+
 
 			// Font loading.
 			fontRegular = fileManager.loadFont(14f);

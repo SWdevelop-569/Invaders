@@ -67,7 +67,7 @@ public final class FileManager {
 			// Sprite loading.
 			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
 					.entrySet()) {
-				for (int i = 0; i < sprite.getValue().length-1; i++)
+				for (int i = 0; i < sprite.getValue().length; i++)
 					for (int j = 0; j < sprite.getValue()[i].length; j++) {
 						do
 							c = (char) inputStream.read();
@@ -77,6 +77,7 @@ public final class FileManager {
 							sprite.getValue()[i][j] = true;
 						else
 							sprite.getValue()[i][j] = false;
+
 					}
 				logger.fine("Sprite " + sprite.getKey() + " loaded.");
 			}

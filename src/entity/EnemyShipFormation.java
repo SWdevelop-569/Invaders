@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,8 @@ import engine.Core;
 import engine.DrawManager;
 import engine.DrawManager.SpriteType;
 import engine.GameSettings;
+
+import static engine.Core.gamemode;
 
 /**
  * Groups enemy ships into a formation that moves together.
@@ -138,19 +141,26 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips) {
 			for (int i = 0; i < this.nShipsHigh; i++) {
-				//새로운 적 요망
-				if (i / (float) this.nShipsHigh < PROPORTION_C)
+				if(i == 0 && (gamemode ==4 || gamemode == 7) ) {//하드모드일때는 맨윗줄 보스
+					spriteType = SpriteType.EnemyShipBoss;
+					column.add(new EnemyShip((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType, Color.ORANGE));
+				}
+				else if (i / (float) this.nShipsHigh < PROPORTION_C)
 					spriteType = SpriteType.EnemyShipC1;
 				else if (i / (float) this.nShipsHigh < PROPORTION_B
 						+ PROPORTION_C)
 					spriteType = SpriteType.EnemyShipB1;
 				else
 					spriteType = SpriteType.EnemyShipA1;
-
-				column.add(new EnemyShip((SEPARATION_DISTANCE 
-						* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType));
+				if(!(i == 0 && (gamemode ==4 || gamemode == 7))) {
+					column.add(new EnemyShip((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType));
+				}
 				this.shipCount++;
 			}
 		}
