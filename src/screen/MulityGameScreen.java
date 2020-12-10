@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import engine.*;
 import entity.*;
 
+import static engine.Core.gamemode;
+
 /**
  * Implements the game screen, where the action happens.
  *
@@ -121,6 +123,22 @@ public class MulityGameScreen extends Screen {
         enemyShipFormation.attach(this);
         this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
         this.ship2 = new Ship(this.width / 2, this.height - 30, Color.BLUE);//2[용 배 객체 생성
+        switch (gamemode){
+            case 5://낮은 난이도는 총이 빠르게 나가고 이동송도가 빠르다
+                this.ship.setShipOption(500,-6,3);
+                this.ship2.setShipOption(500,-6,3);
+                break;
+            case 6:
+                this.ship.setShipOption(600,-6,2);
+                this.ship2.setShipOption(600,-6,2);
+                break;
+            case 7:
+                this.ship.setShipOption(750,-6,2);
+                this.ship2.setShipOption(750,-6,2);
+
+                break;
+        }
+
         // Appears each 10-30 seconds.
         this.enemyShipSpecialCooldown = Core.getVariableCooldown(
                 BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
