@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import static engine.Core.gamemode;
+
 
 /**
  * Implements the score screen.
@@ -16,6 +18,7 @@ import java.util.List;
  * 
  */
 public class ScoreScreen_2p extends Screen {
+	String txtp = "";
 	private int who;
 	/** Milliseconds between changes in user selection. */
 	private static final int SELECTION_TIME = 200;
@@ -71,9 +74,19 @@ public class ScoreScreen_2p extends Screen {
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
 
+		if(gamemode == 5){
+			txtp ="scores_2p_a";
+		}
+		else if(gamemode == 6){
+			txtp ="scores_2p_b";
+		}
+		else if(gamemode == 7){
+			txtp ="scores_2p_c";
+		}
+
 		try {
 			int i = 1;
-			this.highScores = Core.getFileManager().loadHighScores_2p();//나중에 highscore를 파일별로 나눠줘야함
+			this.highScores = Core.getFileManager().loadHighScores_2p(txtp);//나중에 highscore를 파일별로 나눠줘야함
 			if(this.score[0] < this.score[1]) i=2;
 			if (highScores.size() < MAX_HIGH_SCORE_NUM//1p가 신기록인지 검사
 					|| highScores.get(highScores.size() - i).getScore()
@@ -183,9 +196,8 @@ public class ScoreScreen_2p extends Screen {
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORE_NUM)
 			highScores.remove(highScores.size() - 1);
-
 		try {
-			Core.getFileManager().saveHighScores_2p(highScores);
+			Core.getFileManager().saveHighScores_2p(highScores,txtp);
 		} catch (IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
