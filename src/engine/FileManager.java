@@ -357,8 +357,12 @@ public final class FileManager {
 	/////////////////////////////////////
 	public void resetHighScores()
 			throws IOException {
-		resetSelectedHighScores("scores");
-		resetSelectedHighScores("scores_2p");
+		resetSelectedHighScores("scores_1p_a");
+		resetSelectedHighScores("scores_1p_b");
+		resetSelectedHighScores("scores_1p_c");
+		resetSelectedHighScores("scores_2p_a");
+		resetSelectedHighScores("scores_2p_b");
+		resetSelectedHighScores("scores_2p_c");
 	}
 	void resetSelectedHighScores(String name) throws IOException{
 		String jarPath = FileManager.class.getProtectionDomain()
