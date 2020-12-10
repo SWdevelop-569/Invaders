@@ -77,6 +77,7 @@ public final class FileManager {
 							sprite.getValue()[i][j] = true;
 						else
 							sprite.getValue()[i][j] = false;
+
 					}
 				logger.fine("Sprite " + sprite.getKey() + " loaded.");
 			}

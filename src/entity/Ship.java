@@ -16,16 +16,24 @@ import engine.DrawManager.SpriteType;
 public class Ship extends Entity {
 
 	/** Time between shots. */
-	private static final int SHOOTING_INTERVAL = 750;
+	private static int SHOOTING_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship. */
-	private static final int BULLET_SPEED = -6;
+	private static int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	private static int SPEED = 2;
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
+
+	public void setShipOption(int shootInterval,int bulletSpeed,int shipSpeed){
+		SHOOTING_INTERVAL = shootInterval;
+		BULLET_SPEED = bulletSpeed;
+		SPEED = shipSpeed;
+	}
+
+
 
 	/**
 	 * Constructor, establishes the ship's properties.

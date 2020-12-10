@@ -14,6 +14,8 @@ import entity.EnemyShipFormation;
 import entity.Entity;
 import entity.Ship;
 
+import static engine.Core.gamemode;
+
 /**
  * Implements the game screen, where the action happens.
  * 
@@ -113,6 +115,20 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 		this.ship = new Ship(this.width / 2, this.height - 30);
+		switch (gamemode){
+			case 2://낮은 난이도는 총이 빠르게 나가고 이동송도가 빠르다
+				this.ship.setShipOption(500,-6,3);
+				break;
+			case 3:
+				this.ship.setShipOption(600,-6,2);
+				break;
+			case 4:
+				this.ship.setShipOption(750,-6,2);
+				break;
+		}
+
+
+
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
 				BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);

@@ -38,26 +38,19 @@ public final class Core {
 	private static final int NUM_LEVELS = 7;
 	
 	/** Difficulty settings for level 1. */
-	private static final GameSettings SETTINGS_LEVEL_1 =
-			new GameSettings(5, 4, 60, 2000);
+	private static GameSettings SETTINGS_LEVEL_1;
 	/** Difficulty settings for level 2. */
-	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(5, 5, 50, 2500);
+	private static GameSettings SETTINGS_LEVEL_2;
 	/** Difficulty settings for level 3. */
-	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(6, 5, 40, 1500);
+	private static GameSettings SETTINGS_LEVEL_3;
 	/** Difficulty settings for level 4. */
-	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(6, 6, 30, 1500);
+	private static GameSettings SETTINGS_LEVEL_4;
 	/** Difficulty settings for level 5. */
-	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(7, 6, 20, 1000);
+	private static GameSettings SETTINGS_LEVEL_5;
 	/** Difficulty settings for level 6. */
-	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(7, 7, 10, 1000);
+	private static GameSettings SETTINGS_LEVEL_6;
 	/** Difficulty settings for level 7. */
-	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(8, 7, 2, 500);
+	private static GameSettings SETTINGS_LEVEL_7;
 	
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -104,16 +97,9 @@ public final class Core {
 		int width = frame.getWidth();
 		int height = frame.getHeight();
 
-		gameSettings = new ArrayList<GameSettings>();
-		gameSettings.add(SETTINGS_LEVEL_1);
-		gameSettings.add(SETTINGS_LEVEL_2);
-		gameSettings.add(SETTINGS_LEVEL_3);
-		gameSettings.add(SETTINGS_LEVEL_4);
-		gameSettings.add(SETTINGS_LEVEL_5);
-		gameSettings.add(SETTINGS_LEVEL_6);
-		gameSettings.add(SETTINGS_LEVEL_7);
+		GameSettingLevel(2);
 		
-		GameState gameState;
+		GameState gameState;////////////////////////////////check
 		MultiGameState multiGameState;
 
 		int returnCode = 1;
@@ -131,6 +117,7 @@ public final class Core {
 				break;
 			case 2:
 				// Game & score.
+				GameSettingLevel(gamemode);//난이도에 맞는 게임 세팅
 				do {
 					// One extra live every few levels.
 					boolean bonusLife = gameState.getLevel()
@@ -216,6 +203,7 @@ public final class Core {
 				break;
 			case 6:
 //				multi play mode
+				GameSettingLevel(gamemode);//난이도에 맞는 게임 세팅
 				do {
 					// One extra live every few levels.
 					int lives[] = multiGameState.getLivesRemaining();
@@ -350,5 +338,91 @@ public final class Core {
 	public static Cooldown getVariableCooldown(final int milliseconds,
 			final int variance) {
 		return new Cooldown(milliseconds, variance);
+	}
+
+	public static void GameSettingLevel(int mode){
+		SetLevels(mode);
+		gameSettings = new ArrayList<GameSettings>();
+		gameSettings.add(SETTINGS_LEVEL_1);
+		gameSettings.add(SETTINGS_LEVEL_2);
+		gameSettings.add(SETTINGS_LEVEL_3);
+		gameSettings.add(SETTINGS_LEVEL_4);
+		gameSettings.add(SETTINGS_LEVEL_5);
+		gameSettings.add(SETTINGS_LEVEL_6);
+		gameSettings.add(SETTINGS_LEVEL_7);
+	}
+
+
+	public static void SetLevels(int mode){///게임 생성 전 난이도 생성먼저
+		if(mode ==2||mode == 5){//A_easy(default)
+			/** Difficulty settings for level 1. */
+			SETTINGS_LEVEL_1 =
+					new GameSettings(5, 4, 60, 2000);
+			/** Difficulty settings for level 2. */
+			SETTINGS_LEVEL_2 =
+					new GameSettings(5, 5, 50, 2500);
+			/** Difficulty settings for level 3. */
+			SETTINGS_LEVEL_3 =
+					new GameSettings(6, 5, 40, 1500);
+			/** Difficulty settings for level 4. */
+			SETTINGS_LEVEL_4 =
+					new GameSettings(6, 6, 30, 1500);
+			/** Difficulty settings for level 5. */
+			SETTINGS_LEVEL_5 =
+					new GameSettings(7, 6, 20, 1000);
+			/** Difficulty settings for level 6. */
+			SETTINGS_LEVEL_6 =
+					new GameSettings(7, 7, 10, 1000);
+			/** Difficulty settings for level 7. */
+			SETTINGS_LEVEL_7 =
+					new GameSettings(8, 7, 2, 500);
+		}
+		else if(mode == 3|| mode == 6){//B_normal   -> 적 총알 빈도가 상승
+			/** Difficulty settings for level 1. */
+			SETTINGS_LEVEL_1 =
+					new GameSettings(5, 4, 60, 1800);
+			/** Difficulty settings for level 2. */
+			SETTINGS_LEVEL_2 =
+					new GameSettings(5, 5, 50, 2300);
+			/** Difficulty settings for level 3. */
+			SETTINGS_LEVEL_3 =
+					new GameSettings(6, 5, 40, 1600);
+			/** Difficulty settings for level 4. */
+			SETTINGS_LEVEL_4 =
+					new GameSettings(6, 6, 30, 1300);
+			/** Difficulty settings for level 5. */
+			SETTINGS_LEVEL_5 =
+					new GameSettings(7, 6, 20, 800);
+			/** Difficulty settings for level 6. */
+			SETTINGS_LEVEL_6 =
+					new GameSettings(7, 7, 10, 800);
+			/** Difficulty settings for level 7. */
+			SETTINGS_LEVEL_7 =
+					new GameSettings(8, 7, 2, 400);
+		}
+		else{//C_hard -> 적 이동속도 상승 + 적 총알 빈도 상승
+			/** Difficulty settings for level 1. */
+			SETTINGS_LEVEL_1 =
+					new GameSettings(5, 4, 50, 1800);
+			/** Difficulty settings for level 2. */
+			SETTINGS_LEVEL_2 =
+					new GameSettings(5, 5, 40, 2300);
+			/** Difficulty settings for level 3. */
+			SETTINGS_LEVEL_3 =
+					new GameSettings(6, 5, 30, 1200);
+			/** Difficulty settings for level 4. */
+			SETTINGS_LEVEL_4 =
+					new GameSettings(6, 6, 15, 1200);
+			/** Difficulty settings for level 5. */
+			SETTINGS_LEVEL_5 =
+					new GameSettings(7, 6, 10, 800);
+			/** Difficulty settings for level 6. */
+			SETTINGS_LEVEL_6 =
+					new GameSettings(7, 7, 6, 800);
+			/** Difficulty settings for level 7. */
+			SETTINGS_LEVEL_7 =
+					new GameSettings(8, 7, 2, 300);
+		}
+
 	}
 }

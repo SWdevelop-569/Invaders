@@ -6,6 +6,8 @@ import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
 
+import static engine.DrawManager.SpriteType.EnemyShipBoss;
+
 /**
  * Implements a enemy ship, to be destroyed by the player.
  * 
@@ -23,13 +25,16 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
+	/** Point value of a bonus enemy. */
+	private static final int BOSS_TYPE_POINTS = 40;
+
 	/** Cooldown between sprite changes. */
 	private Cooldown animationCooldown;
 	/** Checks if the ship has been hit by a bullet. */
 	private boolean isDestroyed;
 	/** Values of the ship, in points, when destroyed. */
 	private int pointValue;
-
+	Color color;
 	/**
 	 * Constructor, establishes the ship's properties.
 	 * 
@@ -65,6 +70,17 @@ public class EnemyShip extends Entity {
 			this.pointValue = 0;
 			break;
 		}
+	}
+	///for BOSS
+	public EnemyShip(final int positionX, final int positionY,
+					 final SpriteType spriteType, Color bosscolor) {
+		super(positionX, positionY, 12 * 2, 8 * 2, bosscolor);
+
+		this.spriteType = spriteType;
+		this.animationCooldown = Core.getCooldown(500);
+		this.isDestroyed = false;
+		this.pointValue = BOSS_TYPE_POINTS;
+
 	}
 
 	/**
