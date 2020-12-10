@@ -163,7 +163,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public List<Score> loadHighScores() throws IOException {
+	public List<Score> loadHighScores(String txt) throws IOException {
 
 		List<Score> highScores = new ArrayList<Score>();
 		InputStream inputStream = null;
@@ -176,7 +176,7 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			scoresPath += txt;
 
 			File scoresFile = new File(scoresPath);
 			inputStream = new FileInputStream(scoresFile);
@@ -209,7 +209,7 @@ public final class FileManager {
 		return highScores;
 	}
 
-	public List<Score> loadHighScores_2p() throws IOException {//for multi
+	public List<Score> loadHighScores_2p(String txt) throws IOException {//for multi
 
 		List<Score> highScores = new ArrayList<Score>();
 		InputStream inputStream = null;
@@ -222,7 +222,7 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores_2p";
+			scoresPath += txt;
 
 			File scoresFile = new File(scoresPath);
 			inputStream = new FileInputStream(scoresFile);
@@ -264,7 +264,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void saveHighScores(final List<Score> highScores) 
+	public void saveHighScores(final List<Score> highScores,String txt)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
@@ -276,7 +276,7 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			scoresPath += txt;
 
 			File scoresFile = new File(scoresPath);
 
@@ -308,7 +308,7 @@ public final class FileManager {
 	}
 
 	//for multi
-	public void saveHighScores_2p(final List<Score> highScores)
+	public void saveHighScores_2p(final List<Score> highScores,String txt)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
@@ -320,7 +320,7 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores_2p";
+			scoresPath += txt;
 
 			File scoresFile = new File(scoresPath);
 
@@ -357,8 +357,12 @@ public final class FileManager {
 	/////////////////////////////////////
 	public void resetHighScores()
 			throws IOException {
-		resetSelectedHighScores("scores");
-		resetSelectedHighScores("scores_2p");
+		resetSelectedHighScores("scores_1p_a");
+		resetSelectedHighScores("scores_1p_b");
+		resetSelectedHighScores("scores_1p_c");
+		resetSelectedHighScores("scores_2p_a");
+		resetSelectedHighScores("scores_2p_b");
+		resetSelectedHighScores("scores_2p_c");
 	}
 	void resetSelectedHighScores(String name) throws IOException{
 		String jarPath = FileManager.class.getProtectionDomain()

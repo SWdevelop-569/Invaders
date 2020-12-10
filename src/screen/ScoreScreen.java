@@ -10,6 +10,8 @@ import engine.Core;
 import engine.GameState;
 import engine.Score;
 
+import static engine.Core.gamemode;
+
 /**
  * Implements the score screen.
  * 
@@ -17,7 +19,7 @@ import engine.Score;
  * 
  */
 public class ScoreScreen extends Screen {
-
+	String txtp = "";
 	/** Milliseconds between changes in user selection. */
 	private static final int SELECTION_TIME = 200;
 	/** Maximum number of high scores. */
@@ -62,6 +64,10 @@ public class ScoreScreen extends Screen {
 			final GameState gameState) {
 		super(width, height, fps);
 
+		if(gamemode == 2) txtp = "scores_1p_a";
+		else if(gamemode == 3) txtp = "scores_1p_b";
+		else if(gamemode == 4) txtp = "scores_1p_c";
+
 		this.score = gameState.getScore();
 		this.livesRemaining = gameState.getLivesRemaining();
 		this.bulletsShot = gameState.getBulletsShot();
@@ -73,7 +79,7 @@ public class ScoreScreen extends Screen {
 		this.selectionCooldown.reset();
 
 		try {
-			this.highScores = Core.getFileManager().loadHighScores();
+			this.highScores = Core.getFileManager().loadHighScores(txtp);
 			if (highScores.size() < MAX_HIGH_SCORE_NUM
 					|| highScores.get(highScores.size() - 1).getScore()
 					< this.score)
@@ -157,7 +163,7 @@ public class ScoreScreen extends Screen {
 			highScores.remove(highScores.size() - 1);
 
 		try {
-			Core.getFileManager().saveHighScores(highScores);
+			Core.getFileManager().saveHighScores(highScores,txtp);
 		} catch (IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
