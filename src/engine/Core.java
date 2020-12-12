@@ -403,25 +403,25 @@ public final class Core {
 		else{//C_hard -> 적 이동속도 상승 + 적 총알 빈도 상승
 			/** Difficulty settings for level 1. */
 			SETTINGS_LEVEL_1 =
-					new GameSettings(5, 4, 50, 1800);
+					new GameSettings(5, 4, 30, 800);
 			/** Difficulty settings for level 2. */
 			SETTINGS_LEVEL_2 =
-					new GameSettings(5, 5, 40, 2300);
+					new GameSettings(5, 5, 30, 1300);
 			/** Difficulty settings for level 3. */
 			SETTINGS_LEVEL_3 =
-					new GameSettings(6, 5, 30, 1200);
+					new GameSettings(6, 5, 20, 800);
 			/** Difficulty settings for level 4. */
 			SETTINGS_LEVEL_4 =
-					new GameSettings(6, 6, 15, 1200);
+					new GameSettings(6, 6, 12, 800);
 			/** Difficulty settings for level 5. */
 			SETTINGS_LEVEL_5 =
-					new GameSettings(7, 6, 10, 800);
+					new GameSettings(7, 6, 8, 600);
 			/** Difficulty settings for level 6. */
 			SETTINGS_LEVEL_6 =
-					new GameSettings(7, 7, 6, 800);
+					new GameSettings(7, 7, 5, 700);
 			/** Difficulty settings for level 7. */
 			SETTINGS_LEVEL_7 =
-					new GameSettings(8, 7, 2, 300);
+					new GameSettings(8, 7, 2, 200);
 		}
 
 	}
