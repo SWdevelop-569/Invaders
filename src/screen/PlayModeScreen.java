@@ -8,6 +8,8 @@ import java.util.List;
 import engine.Cooldown;
 import engine.Core;
 
+import static engine.Core.gamemode;
+
 /**
  * Implements the high scores screen, it shows player records.
  *
@@ -72,27 +74,35 @@ public class PlayModeScreen extends Screen {
                 nextMenuItem();
                 this.selectionCooldown.reset();
             }
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+            if (inputManager.isKeyDown(KeyEvent.VK_SPACE))//클릭했을 때
+            {
+                if(2 <= this.returnCode && this.returnCode <=4){//싱글
+                    gamemode = this.returnCode;
+                    this.returnCode = 2;
+                }
+                else if(5 <= this.returnCode &&this.returnCode <=7){//멀티
+                    gamemode = this.returnCode;
+                    this.returnCode = 6;
+                }
                 this.isRunning = false;
+            }
         }
     }
 
-    private void nextMenuItem() {
-        if (this.returnCode == 2)
-            this.returnCode = 6;
-        else if (this.returnCode == 6)
-            this.returnCode = 1;
-        else
+    private void nextMenuItem() {//234(single) 567(multi) 1(return)
+        if (this.returnCode == 1)
             this.returnCode = 2;
+        else if(this.returnCode == 7)
+            this.returnCode=1;
+        else this.returnCode++;
     }
 
     private void previousMenuItem() {
-        if (this.returnCode == 2)
-            this.returnCode = 1;
-        else if (this.returnCode == 6)
-            this.returnCode = 2;
-        else
-            this.returnCode = 6;
+        if(this.returnCode == 2)
+            this.returnCode=1;
+        else if(this.returnCode == 1)
+            this.returnCode=7;
+        else this.returnCode--;
     }
 
     /**

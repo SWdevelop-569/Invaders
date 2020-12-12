@@ -39,27 +39,27 @@ public class HighScoreScreen extends Screen {
 		try {
 			switch (forscore){
 				case 2://single-a
-					this.highScores = Core.getFileManager().loadHighScores();
+					this.highScores = Core.getFileManager().loadHighScores("scores_1p_a");
 					mode="single-a";
 					break;
 				case 3://single-b
-					this.highScores = Core.getFileManager().loadHighScores();
+					this.highScores = Core.getFileManager().loadHighScores("scores_1p_b");
 					mode="single-b";
 					break;
 				case 4://single-c
-					this.highScores = Core.getFileManager().loadHighScores();
+					this.highScores = Core.getFileManager().loadHighScores("scores_1p_c");
 					mode="single-c";
 					break;
 				case 5://multi-a
-					this.highScores = Core.getFileManager().loadHighScores_2p();
+					this.highScores = Core.getFileManager().loadHighScores_2p("scores_2p_a");
 					mode="multi-a";
 					break;
 				case 6://multi-b
-					this.highScores = Core.getFileManager().loadHighScores();
+					this.highScores = Core.getFileManager().loadHighScores("scores_2p_b");
 					mode="multi-b";
 					break;
 				case 7://multi-c
-					this.highScores = Core.getFileManager().loadHighScores();
+					this.highScores = Core.getFileManager().loadHighScores("scores_2p_c");
 					mode="multi-c";
 					break;
 			}
